@@ -1,5 +1,5 @@
 from gpiozero import LED, Button
-from time import sleep
+from time import sleep, time
 from random import uniform
 
 # Initialize hardware
@@ -23,22 +23,26 @@ while True:
 
     # Turn LED on for a random duration
     led.on()
-    sleep(uniform(5, 10))
+    on_time = uniform(5, 10)
+    sleep(on_time)
     led.off()
 
+    # Record the time when LED turns off
+    start_time = time()
     winner = None
 
     # Define function to handle button press
     def pressed(button):
-        global winner, left_score, right_score
+        global winner, reaction_time, left_score, right_score
         if winner is None:  # Ensure only the first press is recorded
+            reaction_time = time() - start_time
             if button.pin.number == 14:
                 winner = left_name
-                print(f"{left_name} won this round!")
+                print(f"{left_name} won this round! Reaction time: {reaction_time:.2f} seconds")
                 left_score += 1
             else:
                 winner = right_name
-                print(f"{right_name} won this round!")
+                print(f"{right_name} won this round! Reaction time: {reaction_time:.2f} seconds")
                 right_score += 1
 
     # Bind the pressed function to button events
