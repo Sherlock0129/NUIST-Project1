@@ -16,8 +16,10 @@ led.off()
 def pressed(button):
     if button.pin.number == 14:
         print(left_name + ' won the game')
+        exit()
     else:
         print(right_name + ' won the game')
+        exit()
 
 right_button.when_pressed = pressed
 left_button.when_pressed = pressed
